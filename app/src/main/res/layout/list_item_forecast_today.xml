@@ -4,10 +4,18 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:background="@drawable/today_touch_selector">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:background="@drawable/today_touch_selector">
+
+        <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="7"
@@ -39,9 +47,9 @@
             android:textColor="@color/white"
             android:textSize="36sp"
             android:layout_marginLeft="8dp"/>
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="5"
@@ -63,5 +71,37 @@
             android:layout_gravity="center_horizontal"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+        // things to take
+        <ImageView
+            android:id="@+id/list_item_things"
+            android:src="@drawable/ic_car_white"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+        // Food
+        <ImageView
+            android:id="@+id/list_item_food"
+            android:src="@drawable/ic_food_white"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+        // transport
+        <ImageView
+            android:id="@+id/list_item_transport"
+            android:src="@drawable/ic_things_white"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 </LinearLayout>
