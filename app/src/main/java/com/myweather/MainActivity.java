@@ -41,6 +41,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
 
     private boolean mTwoPane;
     private String mLocation;
+    String data="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,11 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                     try {
                         Thread.sleep(500);
                         if(!checkConnectedToDesiredWifi()){
-                            WeatherAlertHandler.getAlertThings(getApplicationContext(), "C", "2");
+
                             break;
                         }
                         Log.d("VC", "Connected");
+                        data = new WeatherAlertHandler().getAlertThings(getApplicationContext(), "C", "2");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
