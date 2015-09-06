@@ -3,11 +3,14 @@ package com.myweather;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.myweather.R;
 
@@ -15,11 +18,14 @@ import com.myweather.R;
  * {@link ForecastAdapter} exposes a list of weather forecasts
  * from a {@link Cursor} to a {@link android.widget.ListView}.
  */
-public class ForecastAdapter extends CursorAdapter {
+public class ForecastAdapter extends CursorAdapter implements ListAdapter {
 
     private static final int VIEW_TYPE_COUNT = 2;
     private static final int VIEW_TYPE_TODAY = 0;
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
+
+    private Context context;
+    private Cursor cursorr;
 
     // Flag to determine if we want to use a separate view for "today".
     private boolean mUseTodayLayout = true;
@@ -43,9 +49,59 @@ public class ForecastAdapter extends CursorAdapter {
         }
     }
 
+
     public ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
+        this.context = context;
+        this.cursorr = c;
     }
+
+
+
+    /*@Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        View vieww = inflater.inflate(R.layout.list_item_forecast, null);
+
+        Log.d("VC", "Clicked position " + position );
+
+        ImageView imageFood = (ImageView)vieww.findViewById(R.id.list_item_food);
+        imageFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView image = (ImageView) v;
+                image.setImageResource(R.drawable.ic_food_white);
+            }
+        });
+        // long dateInMillis = cursorr.getLong(ForecastFragment.COL_WEATHER_DATE);
+        // Find TextView and set formatted date on it
+        // viewHolder.dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
+
+        // Read weather forecast from cursor
+        // String description = cursorr.getString(ForecastFragment.COL_WEATHER_DESC);
+        // Find TextView and set weather forecast on it
+        // viewHolder.descriptionView.setText(description);
+
+        // For accessibility, add a content description to the icon field
+        // viewHolder.iconView.setContentDescription(description);
+
+        // Read user preference for metric or imperial temperature units
+        // boolean isMetric = Utility.isMetric(context);
+
+        // Read high temperature from cursor
+        // double high = cursorr.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
+        // viewHolder.highTempView.setText(Utility.formatTemperature(context, high));
+
+        // Read low temperature from cursor
+        // double low = cursorr.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
+        // viewHolder.lowTempView.setText(Utility.formatTemperature(context, low));
+
+        //---------------------------------
+
+        // Toast.makeText(context, "You have clicked" + dateInMillis + " " + high + " " + low, Toast.LENGTH_LONG).show();
+
+        return vieww;
+    }*/
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -115,6 +171,19 @@ public class ForecastAdapter extends CursorAdapter {
         // Read low temperature from cursor
         double low = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
         viewHolder.lowTempView.setText(Utility.formatTemperature(context, low));
+
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        View vieww = inflater.inflate(R.layout.list_item_forecast, null);
+        ImageView imageFood = (ImageView)vieww.findViewById(R.id.list_item_food);
+        Log.d("VC", "You have clickeddddddddddddddddddd1111");
+        imageFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView image = (ImageView) v;
+                image.setImageResource(R.drawable.ic_food_white);
+                Log.d("VC", "You have clickeddddddddddddddddddd2222");
+            }
+        });
     }
 
     public void setUseTodayLayout(boolean useTodayLayout) {

@@ -99,6 +99,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
 
+            Log.d("VC", "---------------------Q " + QUERY_PARAM + "- F " + FORMAT_PARAM + "- U " + UNITS_PARAM + "- D " + DAYS_PARAM);
             Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, locationQuery)
                     .appendQueryParameter(FORMAT_PARAM, format)
