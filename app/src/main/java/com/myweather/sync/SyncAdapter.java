@@ -86,7 +86,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         String format = "json";
         String units = "metric";
-        int numDays = 14;
+        int numDays = 7;
 
         try {
             // Construct the URL for the OpenWeatherMap query
@@ -110,6 +110,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             URL url = new URL(builtUri.toString());
 
             // Create the request to OpenWeatherMap, and open the connection
+            Log.d("VC", "------------URL" + url);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
