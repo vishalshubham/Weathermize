@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                 while(true) {
                     //loop for ~5 seconds
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(3000);
                         if(!checkConnectedToDesiredWifi()){
 
                             break;
@@ -182,7 +182,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     private final boolean checkConnectedToDesiredWifi() {
         boolean connected = false;
 
-        String desiredMacAddress = "f4:4e:05:79:2d:20";
+        String desiredMacAddress = "F4:09:D8:43:86:33";
 
         WifiManager wifiManager =
                 (WifiManager)  MainActivity.this.getSystemService(Context.WIFI_SERVICE);
@@ -190,8 +190,8 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         WifiInfo wifi = wifiManager.getConnectionInfo();
         if (wifi != null) {
             // get current router Mac address
-            String bssid = wifi.getBSSID();
-            Log.d("VC", "BSSID: " + bssid);
+            Log.d("VC", "MACCCCC" + wifi.getMacAddress());
+            String bssid = wifi.getMacAddress();
             connected = desiredMacAddress.equals(bssid);
         }
 
