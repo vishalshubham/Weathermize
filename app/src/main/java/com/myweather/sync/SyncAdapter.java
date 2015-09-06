@@ -29,6 +29,7 @@ import android.util.Log;
 
 import com.myweather.MainActivity;
 import com.myweather.R;
+import com.myweather.ThingsActivity;
 import com.myweather.Utility;
 import com.myweather.data.WeatherContract;
 
@@ -45,6 +46,9 @@ import java.net.URL;
 import java.util.Vector;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
+
+    private Context context;
+    public static String PREFS = "PREFS";
     public final String LOG_TAG = SyncAdapter.class.getSimpleName();
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
@@ -69,6 +73,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+        this.context = context;
     }
 
     @Override
@@ -125,12 +130,21 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
+            int i = 0;
             while ((line = reader.readLine()) != null) {
+                if(i==0){
+                    SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(ThingsActivity.WHOLE_LINE, line);
+                    editor.commit();
+                }
                 // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
                 // But it does make debugging a *lot* easier if you print out the completed
                 // buffer for debugging.
                 buffer.append(line + "\n");
             }
+
+            Log.d("VC", "Bufffffffffffeeeeeeerrrrrrrrr" + buffer);
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.

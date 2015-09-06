@@ -18,6 +18,7 @@ package com.myweather;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.myweather.data.WeatherAlertHandler;
 import com.myweather.sync.SyncAdapter;
@@ -48,19 +50,20 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         super.onCreate(savedInstanceState);
         Log.d("VC", "WIFIIIIIIIIIIIIII" + getCurrentSsid(getApplicationContext()));
 
+        String oracle = "http://weatherpennapps.cloudapp.net/weatheritems/rest/witems?wkey=" + "C" + "&tval=" + "2";
+        new WeatherAlertHandler().execute(oracle);
+        Log.d("VC", "Data is : " + data);
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 while(true) {
-                    //loop for ~5 seconds
                     try {
                         Thread.sleep(3000);
                         if(!checkConnectedToDesiredWifi()){
-
+                            Log.d("VC", "Stoppppppeeedddd");
                             break;
                         }
                         Log.d("VC", "Connected");
-                        data = new WeatherAlertHandler().getAlertThings(getApplicationContext(), "C", "2");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -70,7 +73,13 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                //startActivity(new I);
+                Intent i = new Intent(MainActivity.this, ThingsActivity.class);
+                SharedPreferences prefs = getSharedPreferences("PREFS", MODE_PRIVATE);
+                String str = prefs.getString("WHOLE_LINE", "");
+                str = processStr(str);
+                Log.d("VC", "-----------------------Str -------------" + str);
+                i.putExtra("WHOLE_LINE", str);
+                startActivity(i);
             }
         }.execute();
 
@@ -100,6 +109,105 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         forecastFragment.setUseTodayLayout(!mTwoPane);
 
         SyncAdapter.initializeSyncAdapter(this);
+    }
+
+    private String processStr(String str) {
+
+        String strResult = "";
+        int sunnyIndex = str.indexOf("Clear");
+        int rainyIndex = str.indexOf("Rain");
+        int cloudIndex = str.indexOf("Clouds");
+
+        Log.d("VC", "Sunny " + sunnyIndex + " Rainy " + rainyIndex + " Cloud " + cloudIndex);
+
+        if(sunnyIndex < rainyIndex && sunnyIndex < cloudIndex && sunnyIndex>=0){
+            strResult = strResult + "S";
+            Log.d("VC", "It is SSSSSSSSSSSSSSSSSSSS");
+        }
+        else if(rainyIndex < sunnyIndex && rainyIndex < cloudIndex && rainyIndex>=0){
+            strResult = strResult + "R";
+            Log.d("VC", "It is RRRRRRRRRRRRRRRRRRRR");
+        }
+        else if(cloudIndex < rainyIndex && cloudIndex < sunnyIndex && cloudIndex>=0){
+            strResult = strResult + "C";
+            Log.d("VC", "It is CCCCCCCCCCCCCCCCCCCC");
+        }
+        else if(sunnyIndex > -1 && rainyIndex == -1 && cloudIndex == -1){
+            strResult = strResult + "S";
+            Log.d("VC", "It is SSSSSSSSSSS");
+        }
+        else if(sunnyIndex == -1 && rainyIndex > -1 && cloudIndex == -1){
+            strResult = strResult + "R";
+            Log.d("VC", "It is RRRRRRRRRRR");
+        }
+        else if(sunnyIndex == -1 && rainyIndex == -1 && cloudIndex > -1){
+            strResult = strResult + "C";
+            Log.d("VC", "It is CCCCCCCCCCC");
+        }
+        else if(sunnyIndex > -1 && rainyIndex > -1 && cloudIndex == -1){
+            if(sunnyIndex < rainyIndex){
+                strResult = strResult + "S";
+                Log.d("VC", "It is SSSS");
+            }
+            else{
+                strResult = strResult + "R";
+                Log.d("VC", "It is RRRR");
+            }
+        }
+        else if(sunnyIndex == -1 && rainyIndex > -1 && cloudIndex > -1){
+            if(cloudIndex < rainyIndex){
+                strResult = strResult + "C";
+                Log.d("VC", "It is CCCC");
+            }
+            else{
+                strResult = strResult + "R";
+                Log.d("VC", "It is RRRR");
+            }
+        }
+        else if(sunnyIndex > -1 && rainyIndex == -1 && cloudIndex > -1){
+            if(sunnyIndex < cloudIndex){
+                strResult = strResult + "S";
+                Log.d("VC", "It is SSSS");
+            }
+            else{
+                strResult = strResult + "C";
+                Log.d("VC", "It is CCCC");
+            }
+        }
+        strResult = strResult + "-";
+
+        int minStart = str.indexOf("min")+5;
+        int minEnd = str.indexOf("max")-2;
+        int maxStart = str.indexOf("max")+5;
+        int maxEnd = str.indexOf("night")-2;
+
+        Log.d("VC", "Min " + str.substring(minStart, minEnd));
+        Log.d("VC", "Max " + str.substring(maxStart, maxEnd));
+
+        Double d1 = Double.parseDouble(str.substring(minStart, minEnd));
+        int minValue = d1.intValue();
+        Double d2 = Double.parseDouble(str.substring(maxStart, maxEnd));
+        int maxValue = d2.intValue();
+
+        Log.d("VC", "Min" + minValue + "-");
+        Log.d("VC", "Max" + maxValue + "-");
+
+        String data = str.substring(str.indexOf("min"));
+
+        if(maxValue>30){
+            strResult = strResult + "30";
+        }
+        else if(minValue<2){
+            strResult = strResult + "02";
+        }
+        else if(minValue<10){
+            strResult = strResult + "10";
+        }
+        else{
+            strResult = strResult + "30";
+        }
+
+        return strResult;
     }
 
     @Override
@@ -183,6 +291,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         boolean connected = false;
 
         String desiredMacAddress = "F4:09:D8:43:86:33";
+        String desiredNetworkId = "38";
 
         WifiManager wifiManager =
                 (WifiManager)  MainActivity.this.getSystemService(Context.WIFI_SERVICE);
@@ -190,9 +299,9 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         WifiInfo wifi = wifiManager.getConnectionInfo();
         if (wifi != null) {
             // get current router Mac address
-            Log.d("VC", "MACCCCC" + wifi.getMacAddress());
-            String bssid = wifi.getMacAddress();
-            connected = desiredMacAddress.equals(bssid);
+            String netId = String.valueOf(wifi.getNetworkId());
+            connected = desiredNetworkId.equals(netId);
+            Log.d("VC", "Connected   " + connected + " " + wifi.getNetworkId() + " " + desiredNetworkId);
         }
 
         return connected;

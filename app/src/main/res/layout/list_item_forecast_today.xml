@@ -79,29 +79,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal">
-        // things to take
-        <ImageView
-            android:id="@+id/list_item_things"
-            android:src="@drawable/ic_car_white"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
-        // Food
-        <ImageView
-            android:id="@+id/list_item_food"
-            android:src="@drawable/ic_food_white"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
-        // transport
-        <ImageView
-            android:id="@+id/list_item_transport"
-            android:src="@drawable/ic_things_white"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+
     </LinearLayout>
 </LinearLayout>

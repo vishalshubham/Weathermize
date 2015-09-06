@@ -172,18 +172,6 @@ public class ForecastAdapter extends CursorAdapter implements ListAdapter {
         double low = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
         viewHolder.lowTempView.setText(Utility.formatTemperature(context, low));
 
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        View vieww = inflater.inflate(R.layout.list_item_forecast, null);
-        ImageView imageFood = (ImageView)vieww.findViewById(R.id.list_item_food);
-        Log.d("VC", "You have clickeddddddddddddddddddd1111");
-        imageFood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView image = (ImageView) v;
-                image.setImageResource(R.drawable.ic_food_white);
-                Log.d("VC", "You have clickeddddddddddddddddddd2222");
-            }
-        });
     }
 
     public void setUseTodayLayout(boolean useTodayLayout) {
