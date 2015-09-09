@@ -28,7 +28,6 @@ public class WeatherAlertHandler extends AsyncTask<String, String, String>{
     protected String doInBackground(String... strings) {
         String urlString=strings[0]; // URL to call
 
-        // HTTP Get
         String wholeLine="";
         Log.d("VC", "Hellllllllllllooooooooooo" + urlString);
         try{
