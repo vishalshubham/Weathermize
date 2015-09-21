@@ -1,0 +1,23 @@
+db.weather_items.save({"weather_key" : "R", 
+"itemsArray": [{"item":"Rain coat"},{"item":"Umbrella"}]});
+
+db.weather_items.insert({"weather_key" : "S", 
+"itemsArray": [{"item":"Sunscreen"},{"item":"Light Umbrella"}]});
+
+db.weather_items.insert({"weather_key" : "C", 
+"itemsArray": [{"item":"Sunscreen"},{"item":"Hoodie"}]});
+
+db.weather_items.insert({"weather_key" : "W", 
+"itemsArray": [{"item":"Goggles"},{"item":"Gloves"}]});
+
+db.weather_items.insert({"weather_key" : "T", "weather_value" : "30", 
+"weather_operator":"ge",
+"itemsArray": [{"item":"Water"}]});
+				
+db.weather_items.insert({"weather_key" : "T", "weather_value" : "10", 
+"weather_operator":"le",
+"itemsArray": [{"item":"Jacket"}]});
+
+db.weather_items.insert({"weather_key" : "T", "weather_value" : "2", 
+"weather_operator":"le",
+"itemsArray": [{"item":"Thermals"}]});
