@@ -1,3 +1,5 @@
+use weather_food_db;
+
 db.weather_items.save({"weather_key" : "R", 
 "itemsArray": [{"item":"Rain coat"},{"item":"Umbrella"}]});
 
